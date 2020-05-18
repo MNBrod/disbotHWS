@@ -2,13 +2,13 @@ const { mentionUtils, permissionUtils } = require('../utils');
 module.exports = {
 	name: 'permission-test',
 	aliases: ['permission', 'level', 'pt'],
-	description: 'Adds/removes user from a permission level',
-	usage: 'set-permission <@user> <level (one, two, three, four)>',
+	description: 'Prints input arguments and then the user mentioned. Checks if there are permissions set',
+	usage: 'permission <@user>',
 	args: true,
 	execute(message, args) {
 		const user = mentionUtils.getUserFromMention(args[0], message.client);
 
-		let res = 'Arguments: ' + args;
+		let res = '';
 
 		if (user) {
 			res += ' with mention: ' + user.username + ' ID: ' + user.id;
