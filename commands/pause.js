@@ -7,10 +7,13 @@ module.exports = {
 			const connection = await message.member.voice.channel.join();
 
 			// Create a dispatcher
-			const dispatcher = connection.pause();
+			const dispatcher = connection.dispatcher();
+			if (dispatcher) {
+				dispatcher.pause();
 
+				dispatcher.on('error', console.error);
+			}
 			// Always remember to handle errors appropriately!
-			dispatcher.on('error', console.error);
 		}
 	},
 };
