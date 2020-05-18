@@ -7,7 +7,7 @@ module.exports = {
 			const connection = await message.member.voice.channel.join();
 
 			// Create a dispatcher
-			const dispatcher = connection.dispatcher();
+			const dispatcher = connection.dispatcher;
 			if (dispatcher) {
 				dispatcher.pause();
 
