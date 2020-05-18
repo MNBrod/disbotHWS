@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'pause',
+	name: 'resume',
 	cooldown: 5,
 	description: 'Information about the arguments provided.',
 	async execute(message) {
