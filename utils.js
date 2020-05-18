@@ -1,4 +1,5 @@
 const config = require('./config.json');
+const fs = require('fs');
 
 function getUserFromMention(mention, client) {
 	if (!mention) return;
@@ -30,22 +31,23 @@ function checkIfLevelExists(level) {
 }
 
 function setPermissionForUserID(id, level) {
-	const permissions = config.permissions;
+	const configJSON = JSON.parse(config);
 
 	if (!checkIfLevelExists(level)) {
 		return false;
 	}
 
 	// Remove the user from all other permission levels
-	for (const permissionLevel of Object.keys(permissions)) {
-		if (permissions[permissionLevel].includes(id)) {
+	for (const permissionLevel of Object.keys(configJSON.permissions)) {
+		if (configJSON.permissions[permissionLevel].includes(id)) {
 			// remove the user
-			const idx = permissions[permissionLevel].indexOf(id);
-			permissions[permissionLevel].splice(idx, 1);
+			const idx = configJSON.permissions[permissionLevel].indexOf(id);
+			configJSON.permissions[permissionLevel].splice(idx, 1);
 		}
 	}
-	permissions[level].push(id);
+	configJSON.permissions[level].push(id);
 
+	fs.writeFile('./config.json', JSON.stringify(configJSON));
 	return true;
 }
 
