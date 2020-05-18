@@ -8,7 +8,7 @@ module.exports = {
 	execute(message, args) {
 		const user = mentionUtils.getUserFromMention(args[0], message.client);
 
-		let res = 'Arguments: ' + ', '.join(args);
+		let res = 'Arguments: ' + args;
 
 		if (user) {
 			res += ' with mention: ' + user.username + ' ID: ' + user.id;
