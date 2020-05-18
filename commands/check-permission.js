@@ -1,8 +1,8 @@
 const { mentionUtils, permissionUtils } = require('../utils');
 module.exports = {
-	name: 'permission-test',
-	aliases: ['permission', 'level', 'pt'],
-	description: 'Prints input arguments and then the user mentioned. Checks if there are permissions set',
+	name: 'check-permission',
+	aliases: ['check'],
+	description: 'Returns what permission level is set for this user',
 	usage: 'permission <@user>',
 	args: true,
 	execute(message, args) {
@@ -10,16 +10,13 @@ module.exports = {
 
 		let res = '';
 
-		if (user) {
-			res += ' with mention: ' + user.username + ' ID: ' + user.id;
-		}
 		const level = permissionUtils.checkPermissionsForUserID(user.id);
 
 		if (level) {
-			res += `\nThis user has a permission level of ${level}`;
+			res += `\n${user.username} has a permission level of ${level}`;
 		}
 		else {
-			res += '\nThis user has no permission level set';
+			res += `\n${user.username} has no permission level set`;
 		}
 		message.channel.send(res);
 	},

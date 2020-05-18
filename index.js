@@ -1,4 +1,5 @@
 const { prefix, token } = require('./config.json');
+const { permissionUtils } = require('./utils');
 
 const fs = require('fs');
 const Discord = require('discord.js');
@@ -75,6 +76,11 @@ client.on('message', message => {
 
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+	if (!permissionUtils.isUserAllowed(message.author.id, command.permissionLevel)) {
+		message.reply('You do not have sufficient permissions to execute this command');
+		return;
+	}
 
 	try {
 		command.execute(message, args);

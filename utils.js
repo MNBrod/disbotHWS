@@ -16,9 +16,12 @@ function getUserFromMention(mention, client) {
 }
 
 function checkPermissionsForUserID(id) {
-	const permissions = config.permissions;
+	const con = fs.readFileSync('./config.json');
+	const configJSON = JSON.parse(con);
+
+	const permissions = configJSON.permissions;
 	for (const level of Object.keys(permissions)) {
-		if (permissions[level].includes(id)) {
+		if (permissions[level].users.includes(id)) {
 			return level;
 		}
 	}
@@ -31,7 +34,8 @@ function checkIfLevelExists(level) {
 }
 
 function setPermissionForUserID(id, level) {
-	const configJSON = JSON.parse(config);
+	const con = fs.readFileSync('./config.json');
+	const configJSON = JSON.parse(con);
 
 	if (!checkIfLevelExists(level)) {
 		return false;
@@ -39,16 +43,33 @@ function setPermissionForUserID(id, level) {
 
 	// Remove the user from all other permission levels
 	for (const permissionLevel of Object.keys(configJSON.permissions)) {
-		if (configJSON.permissions[permissionLevel].includes(id)) {
+		if (configJSON.permissions[permissionLevel].users.includes(id)) {
 			// remove the user
-			const idx = configJSON.permissions[permissionLevel].indexOf(id);
-			configJSON.permissions[permissionLevel].splice(idx, 1);
+			const idx = configJSON.permissions[permissionLevel].users.indexOf(id);
+			configJSON.permissions[permissionLevel].users.splice(idx, 1);
 		}
 	}
-	configJSON.permissions[level].push(id);
+	configJSON.permissions[level].users.push(id);
 
-	fs.writeFile('./config.json', JSON.stringify(configJSON));
+	fs.writeFileSync('./config.json', JSON.stringify(configJSON, null, 4));
 	return true;
+}
+
+function isUserAllowed(id, level) {
+	// If no level is required, then anyone can use it
+	if (!level) {
+		return true;
+	}
+
+	const userLevel = checkPermissionsForUserID(id);
+	const levels = config.permissions;
+
+	if (levels[userLevel].rank <= levels[level].rank) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 // Organize exports
@@ -60,6 +81,7 @@ const permissionUtils = {
 	checkPermissionsForUserID,
 	checkIfLevelExists,
 	setPermissionForUserID,
+	isUserAllowed,
 };
 
 module.exports = {
