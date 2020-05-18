@@ -38,6 +38,8 @@ client.on('message', message => {
 	// If there isn't a command or alias for this, move on
 	if (!command) return;
 
+	// Check Permissions
+
 	// Check to see if the command has the required arguments (or lack thereof)
 	if (command.args && !args.length) {
 		let reply = `You didn't provide any arguments, ${message.author}!`;
