@@ -2,12 +2,12 @@ module.exports = {
 	name: 'audio',
 	cooldown: 5,
 	description: 'Information about the arguments provided.',
-	async execute(message) {
+	async execute(message, args) {
 		if (message.member.voice.channel) {
 			const connection = await message.member.voice.channel.join();
 
 			// Create a dispatcher
-			const dispatcher = connection.play('https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3');
+			const dispatcher = connection.play(args[0] || 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3');
 
 			// const dispatcher = connection.play(fs.createReadStream('./deadlines.mp3'));
 			dispatcher.on('start', () => {

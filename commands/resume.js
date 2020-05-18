@@ -9,7 +9,7 @@ module.exports = {
 			// Create a dispatcher
 			const dispatcher = connection.dispatcher;
 			if (dispatcher) {
-				dispatcher.pause();
+				dispatcher.resume();
 
 				// Always remember to handle errors appropriately!
 				dispatcher.on('error', console.error);
