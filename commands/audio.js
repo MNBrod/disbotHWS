@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'audio',
 	cooldown: 5,
+	permissionLevel: 'one',
 	description: 'Information about the arguments provided.',
 	async execute(message, args) {
 		if (message.member.voice.channel) {
