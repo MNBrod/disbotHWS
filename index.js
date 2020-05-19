@@ -20,12 +20,32 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+const premessageHooks = [];
+
+const hookFiles = fs.readdirSync('./pre-message-hooks').filter(file => file.endsWith('.js'));
+
+for (const file of hookFiles) {
+	const hook = require(`./pre-message-hooks/${file}`);
+	premessageHooks.push(hook);
+}
 
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
 client.on('message', message => {
+
+	// Check pre-message hooks
+	for (const hook of premessageHooks) {
+		// console.log(hook);
+		try {
+			hook.execute(message);
+		}
+		catch (error) {
+			console.error(error);
+		}
+	}
+
 	// If this isn't a command, or the message came from a bot, move on
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -91,5 +111,7 @@ client.on('message', message => {
 	}
 
 });
+
+process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
 
 client.login(token);
