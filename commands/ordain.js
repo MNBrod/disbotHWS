@@ -11,7 +11,7 @@ module.exports = {
 		const excom = JSON.parse(con);
 
 		if (!excom.ordained.includes(message.author.id)) {
-			message.channel.send(`${message.author.id}, you dare try to speak for the church?`);
+			message.channel.send(`${message.author}, you dare try to speak for the church?`);
 			return;
 		}
 
@@ -19,7 +19,7 @@ module.exports = {
 
 		excom.ordained.push(user.id);
 
-		message.channel.send(`${user.id}, we welcome you into the priesthood.`);
+		message.channel.send(`${user}, we welcome you into the priesthood.`);
 
 		fs.writeFileSync('./resources/excommunicate/excommunicated.json', JSON.stringify(excom, null, 4));
 	},
